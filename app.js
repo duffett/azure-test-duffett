@@ -51,8 +51,9 @@ var hbs = exphbs.create({
 
 app.engine('handlebars', hbs.engine);
 
+console.log(" DO U SEE WHAT I SEE")
 // view engine setup
-app.set('views', path.join('.', '/views'));
+app.set('views', path.join('./', 'views'));
 app.set('view engine', 'handlebars');
 
 // uncomment after placing your favicon in /public
