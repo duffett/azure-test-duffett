@@ -1,0 +1,17 @@
+<script>
+
+</script>
+
+<h2>All {{{invoices.length}}} Invoices</h2>
+
+<ul>
+    {{#each invoices}}
+    <div>
+        <h3><a href="/invoice/{{DocNumber}}">{{DocNumber}}</a></h3>
+        {{#each Line}} {{#if_eq DetailType 'SalesItemLineDetail'}}
+        <li>{{{DetailType}}} - {{{Description}}}</li>
+        {{/if_eq}}
+        <span></span> {{/each}}
+    </div>
+    {{/each}}
+</ul>

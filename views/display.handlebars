@@ -1,0 +1,29 @@
+<div>
+    <p><strong>You have successfully connected!</strong>
+        <p>
+            <strong>Your Access Token </strong> : {{{AccessToken}}}<br/>
+            <strong>Your Access Secret </strong> : {{{AccessTokenSecret}}}
+</div>
+<div>
+    View
+    <a href="/invoice">Invoices</a>
+</div>
+
+
+<div>
+    <label for="invoice-number">Invoice Number:</label>
+    <input type="number" id="invoice-number" />
+    <button id="shipping-documnet">Get Shipping Document</button>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#shipping-documnet").click(function () {
+            var invoiceNumber = $("#invoice-number").val();
+            if (invoiceNumber) {
+                window.location.href = 'invoice/' + invoiceNumber;
+            }
+        });
+    });
+
+</script>

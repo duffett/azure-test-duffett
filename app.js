@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var exphbs = require('express-handlebars');
 var favicon = require('serve-favicon');
 
 var session = require('express-session')
@@ -21,10 +22,24 @@ var logger = function (req, res, next) {
 
 app.use(logger); // Here you add your logger to the stack.
 
+var hbs = exphbs.create({
+  defaultLayout: 'main',
+  helpers: {
+    if_eq: function (a, b, opts) {
+      if (a == b) {
+        return opts.fn(this);
+      } else {
+        return opts.inverse(this);
+      }
+    }
+  }
+});
+
+app.engine('handlebars', hbs.engine);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'handlebars');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

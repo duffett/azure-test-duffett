@@ -1,8 +1,0 @@
-ul
-  each invoice in invoices
-    li= invoice.DocNumber
-    each line_item in invoice.Line
-        strong #{line_item.Description} 
-        li
-            span #{JSON.stringify(line_item.SalesItemLineDetail)}
-            //- span #{line_item.SalesItemLineDetail["UnitPrice"]}
