@@ -4,7 +4,9 @@ var config = require('../conf/settings.js')
 /* GET home page. */
 router.get('/', function (req, res, next) {
   console.log("GRANT URL PORT: " + config.Port)
-  var grantUrl = 'http://localhost:' + config.Port + '/connect';
+  var serverPath = 'http://' + req.get('host');
+  // var grantUrl = 'http://localhost:' + config.Port + '/connect';
+  var grantUrl = serverPath + '/connect';
   res.render('index', {
     title: 'Welcome IWM QuickBooks Demo',
     grantUrl: grantUrl
