@@ -12,6 +12,10 @@ var invoiceRoute = require('./routes/invoice.js');
 var connect = require('./routes/oauth/connect');
 var callback = require('./routes/oauth/callback');
 
+// eventually resolve all of these issues with 
+// keeping the entry point stored in web.config 
+// 
+process.chdir(__dirname);
 
 var app = express();
 
@@ -53,7 +57,7 @@ app.engine('handlebars', hbs.engine);
 
 console.log(" DO U SEE WHAT I SEE")
 // view engine setup
-app.set('views', path.join('./', 'views'));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
 
 // uncomment after placing your favicon in /public
