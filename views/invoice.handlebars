@@ -1,3 +1,10 @@
 <h2>Hi</h2>
-<span>{{{invoice.DocNumber}}}</span>
+<span>{{{invoice.DocNumber}}}</span> {{#each invoice.Line}}
+<div> {{#if_eq DetailType 'SalesItemLineDetail'}}
+    <div>
+        <li>{{{DetailType}}} - {{{Description}}}</li>
+    </div>
+    {{/if_eq}}
+    <span></span></div> {{/each}}
+
 <pre>{{{ json invoice}}}</pre>
