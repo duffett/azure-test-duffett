@@ -9,6 +9,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var routes = require('./routes/index');
 var invoiceRoute = require('./routes/invoice.js');
+var docsRoute = require('./routes/docs.js');
 var connect = require('./routes/oauth/connect');
 var callback = require('./routes/oauth/callback');
 
@@ -24,8 +25,6 @@ var logger = function (req, res, next) {
   next(); // Passing the request to the next handler in the stack.
 }
 var addQboSettings = function (req, res, next) {
-
-
 
   req.session.qbo = {
     token: accessToken.oauth_token,

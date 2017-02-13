@@ -11,7 +11,6 @@ var getQbo = function (args) {
     message += 'oauth token: ' + args.token + '<br/>'
     message += 'oauth secret: ' + args.secret + '<br/><br/><br/>'
 
-    // message += 'AccessToken: ' + req.session.AccessToken + '<br/><br/>' + 'AccessTokenSecret: ' + req.session.AccessTokenSecret
     var realmId;
 
     var qbo = new QuickBooks(config.consumerKey,
@@ -30,11 +29,11 @@ router.get('/', function (req, res, next) {
         if (err) {
             return res.send(JSON.stringify(err));
         }
-        // console.log("INVOICE: " + JSON.stringify(data.QueryResponse.Invoice[0]))
-
-        // console.log(data.QueryResponse.Invoice.length + ' invoices found')
         res.render('invoices', {
-            invoices: data.QueryResponse.Invoice
+            invoices: data.QueryResponse.Invoice,
+            session: req.session
+
+
         });
 
     })
@@ -48,11 +47,9 @@ router.get('/:id', function (req, res, next) {
         if (err) {
             return res.send(JSON.stringify(err));
         }
-        // console.log(data.QueryResponse.Invoice.length + ' invoices found')
-        console.log("&&&&&&&&&&&&&&&&&&")
-        console.log(JSON.stringify(data, null, 8))
         res.render('invoice', {
-            invoice: data
+            invoice: data,
+            session: req.session
         });
 
     })

@@ -9,7 +9,9 @@ router.get('/', function (req, res, next) {
   var grantUrl = serverPath + '/connect';
   res.render('index', {
     title: 'Welcome IWM QuickBooks Demo',
-    grantUrl: grantUrl
+    grantUrl: grantUrl,
+    session: req.session
+
   });
 });
 
@@ -21,8 +23,29 @@ router.get('/display', function (req, res) {
   res.render('display', {
     Port: config.Port,
     AccessToken: req.session.AccessToken,
-    AccessTokenSecret: req.session.AccessTokenSecret
+    AccessTokenSecret: req.session.AccessTokenSecret,
+    session: req.session
   });
 });
+
+router.get('/docs/license', function (req, res, next) {
+  res.render('docs/license', {
+    session: req.session
+  });
+});
+
+router.get('/docs/privacy', function (req, res, next) {
+  res.render('docs/privacy', {
+    session: req.session
+  });
+});
+
+router.get('/logout', function (req, res) {
+  req.session.qbo = null;
+  res.render('logout', {
+    session: req.session
+  })
+});
+
 
 module.exports = router;

@@ -3,12 +3,36 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Example App</title>
+    <title>IWM App</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 
 <body>
     {{{body}}}
+
+    <div>
+        <ipp:connectToIntuit></ipp:connectToIntuit>
+
+        <script src="https://appcenter.intuit.com/Content/IA/intuit.ipp.anywhere-1.3.1.js"></script>
+        <script>intuit.ipp.anywhere.setup({
+                grantUrl: '{{{grantUrl}}}',
+                datasources:
+                {
+                    quickbooks: true,
+                    payments: false
+                }
+            }
+            );   
+        </script>
+</div>
+
 </body>
+
+<footer>
+    <a href="/docs/license">License</a>
+    <a href="/docs/privacy">Privacy Information</a>
+    <a href="/logout">Logout</a>
+    <pre>{{{json session}}}</pre>
+</footer>
 
 </html>
