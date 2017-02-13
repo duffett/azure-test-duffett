@@ -39,7 +39,23 @@ router.get('/', function (req, res, next) {
     })
 });
 
-router.get('/:id', function (req, res, next) {
+router.get('/:id/', function (req, res, next) {
+
+    console.log("ID: " + req.params.id + req.query.shipping)
+    var qbo = getQbo(req.session.qbo);
+    qbo.getInvoice(req.params.id, function (err, data) {
+        if (err) {
+            return res.send(JSON.stringify(err));
+        }
+
+        res.render('invoice', {
+            invoice: data,
+            session: req.session
+        });
+    })
+});
+
+router.get('/:id/shipping', function (req, res, next) {
 
     console.log("ID: " + req.params.id)
     var qbo = getQbo(req.session.qbo);
@@ -47,11 +63,12 @@ router.get('/:id', function (req, res, next) {
         if (err) {
             return res.send(JSON.stringify(err));
         }
-        res.render('invoice', {
+
+        res.render('shipping', {
+            layout: 'doc',
             invoice: data,
             session: req.session
         });
-
-    })
+    });
 });
 module.exports = router;

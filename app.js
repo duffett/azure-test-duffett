@@ -48,6 +48,27 @@ var hbs = exphbs.create({
     },
     json: function (context) {
       return JSON.stringify(context, null, 4);
+    },
+    date: function (value) {
+      if (!value) {
+        return "";
+      }
+      var date = new Date(value);
+      console.log("DATE " + date)
+
+      return date.toLocaleDateString("en-US");
+
+    },
+    isHazardous: function (text) {
+      return text.indexOf('HAZARDOUS') > -1 ? "*" : "";
+    },
+    removeParent: function (text) {
+      if (text.indexOf(':') > -1) {
+        return text.split(/[:]+/).pop()
+      } else {
+        return text;
+      }
+
     }
   }
 });

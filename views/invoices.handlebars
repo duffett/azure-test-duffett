@@ -7,11 +7,13 @@
 <ul>
     {{#each invoices}}
     <div>
-        <h3><a href="/invoice/{{Id}}">{{DocNumber}}</a></h3>
-        {{#each Line}} {{#if_eq DetailType 'SalesItemLineDetail'}}
-        <li>{{{DetailType}}} - {{{Description}}}</li>
-        {{/if_eq}}
-        <span></span> {{/each}}
+        <h3>{{{DocNumber}}} - {{{date TxnDate}}} - {{{CustomerRef.name}}} <a href="/invoice/{{Id}}/shipping" class="shipping-document">Shipping Document</a></h3>
+
     </div>
     {{/each}}
 </ul>
+<script>
+    $(document).ready(function () {
+
+    })
+</script>

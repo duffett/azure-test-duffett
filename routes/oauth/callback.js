@@ -24,14 +24,13 @@ router.get('/', function (req, res) {
     }
     request.post(getAccessToken, function (e, r, data) {
         var accessTokenLocal = qs.parse(data);
+
         req.session.qbo = {
             token: accessTokenLocal.oauth_token,
             secret: accessTokenLocal.oauth_token_secret,
             companyid: getAccessToken.oauth.realmId
         };
 
-        // sessionData.AccessToken = accessTokenLocal.oauth_token;
-        // sessionData.AccessTokenSecret = accessTokenLocal.oauth_token_secret;
         console.log(accessTokenLocal);
         if (sessionData.AccessToken != null) {
             console.log('*******')
