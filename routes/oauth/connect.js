@@ -9,10 +9,12 @@ var
 router.get('/', function (req, res) {
     var sessionData = req.session;
     sessionData.oauth_token_secret = '';
+    var serverPath = 'http://' + req.get('host');
+    console.log("POTENTIAL CALLBACK: " + serverPath)
     var getrequestToken = {
         url: config.REQUEST_TOKEN_URL,
         oauth: {
-            callback: 'http://localhost:' + config.Port + '/callback/',
+            callback: serverPath + '/callback/',
             consumer_key: config.consumerKey,
             consumer_secret: config.consumerSecret
         }
