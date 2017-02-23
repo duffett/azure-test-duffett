@@ -1,4 +1,5 @@
 var config = require('../conf/settings.js');
+var token = require('../conf/token.js');
 
 var QuickBooks = require('node-quickbooks')
 
@@ -6,20 +7,35 @@ var express = require('express');
 var router = express.Router();
 
 var getQbo = function (args) {
-    var message = 'consumerKey: ' + config.consumerKey + '<br/>'
-    message += 'consumerSecret: ' + config.consumerSecret + '<br/>'
-    message += 'oauth token: ' + args.token + '<br/>'
-    message += 'oauth secret: ' + args.secret + '<br/><br/><br/>'
+    // var qbInfo = {
+    //     consumer: {
+    //         key: config.consumerKey,
+    //         secret: config.consumerSecret
+    //     },
+    //     oauth: {
+    //         token: args.token,
+    //         secret: args.secret
+    //     },
+    //     companyId: args.companyid
+    // };
+    // var message = 'consumerKey: ' + qbInfo.consumer.key + '<br/>'
+    // message += 'consumerSecret: ' + config.consumerSecret + '<br/>'
+    // message += 'oauth token: ' + args.token + '<br/>'
+    // message += 'oauth secret: ' + args.secret + '<br/><br/><br/>'
+    console.log('ARGS: ' + JSON.stringify(args) + '\n' +
+        token.consumer.key + '\n' +
+        token.consumer.secret + '\n' +
+        token.oauth.token + '\n' +
+        token.oauth.secret + '\n' +
+        token.companyId);
 
-    var realmId;
-
-    var qbo = new QuickBooks(config.consumerKey,
-        config.consumerSecret,
-        args.token,
-        args.secret,
-        args.companyid,
+    var qbo = new QuickBooks(token.consumer.key,
+        token.consumer.secret,
+        token.oauth.token,
+        token.oauth.secret,
+        token.companyId,
         false, // don't use the sandbox (i.e. for testing)
-        true); // turn debugging on
+        false); // turn debugging on
     return qbo;
 }
 /* GET users listing. */

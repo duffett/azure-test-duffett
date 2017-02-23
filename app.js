@@ -26,11 +26,22 @@ var logger = function (req, res, next) {
 }
 var addQboSettings = function (req, res, next) {
 
+  // {
+  //   oauth_token_secret: 'HMc06NZ8XcHGGnOIIx2t5eMpGtuJUQh5ur3nHyFv',
+  //   oauth_token: 'qyprdYaKKtu5Bd1riEZ8PbxLX8FeaTDRGPh6Qgp6Ur6AqVH5',
+  //   oauth_callback_confirmed: 'true'
+  // }
+  // Request Received: /callback/ {
+  //   oauth_token_secret: 'lT6UHbslSEZXxGW2khARjj2ZKGpYEH1Ssz9x5rxr',
+  //   oauth_token: 'lvprdPWqxtUv9Gd9CMFYO6CR6I6qElYWfQL1HJnveQuQ980Y'
+  // }
+
   req.session.qbo = {
     token: accessToken.oauth_token,
     secret: accessToken.oauth_token_secret,
     companyid: postBody.oauth.realmId
   };
+  console.log("VALUES TO UPDATE ~30 DAYS: " + JSON.stringify(req.session.qbo))
   next(); // Passing the request to the next handler in the stack.
 }
 
@@ -54,7 +65,6 @@ var hbs = exphbs.create({
         return "";
       }
       var date = new Date(value);
-      console.log("DATE " + date)
 
       return date.toLocaleDateString("en-US");
 
@@ -75,7 +85,6 @@ var hbs = exphbs.create({
 
 app.engine('handlebars', hbs.engine);
 
-console.log(" DO U SEE WHAT I SEE")
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
