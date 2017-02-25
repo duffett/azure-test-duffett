@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.16.0",
@@ -14,8 +14,11 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.1",
     "jade": "~1.11.0",
+    "method-override": "^2.3.7",
     "morgan": "~1.7.0",
     "node-quickbooks": "^2.0.11",
+    "passport": "^0.3.2",
+    "passport-intuit": "^0.2.0",
     "request": "^2.79.0",
     "serve-favicon": "~2.3.2"
   }
