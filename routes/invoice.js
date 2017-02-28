@@ -6,7 +6,7 @@ var QuickBooks = require('node-quickbooks')
 var express = require('express');
 var router = express.Router();
 
-var getQbo = function (args) {
+var getQbo = function () {
     // var qbInfo = {
     //     consumer: {
     //         key: config.consumerKey,
@@ -22,14 +22,15 @@ var getQbo = function (args) {
     // message += 'consumerSecret: ' + config.consumerSecret + '<br/>'
     // message += 'oauth token: ' + args.token + '<br/>'
     // message += 'oauth secret: ' + args.secret + '<br/><br/><br/>'
-    console.log('ARGS: ' + JSON.stringify(args) + '\n' +
+    console.log('ARGS: \n' +
         token.consumer.key + '\n' +
         token.consumer.secret + '\n' +
         token.oauth.token + '\n' +
         token.oauth.secret + '\n' +
         token.companyId);
 
-    var qbo = new QuickBooks(token.consumer.key,
+    var qbo = new QuickBooks(
+        token.consumer.key,
         token.consumer.secret,
         token.oauth.token,
         token.oauth.secret,
@@ -40,16 +41,16 @@ var getQbo = function (args) {
 }
 /* GET users listing. */
 router.get('/', function (req, res, next) {
-    var qbo = getQbo(req.session.qbo);
+    console.log("/invoice/")
+    var qbo = getQbo();
     qbo.findInvoices(null, function (err, data) {
         if (err) {
             return res.send(JSON.stringify(err));
         }
+        // console.log("data?")
         res.render('invoices', {
             invoices: data.QueryResponse.Invoice,
             session: req.session
-
-
         });
 
     })

@@ -19,6 +19,7 @@
     "node-quickbooks": "^2.0.11",
     "passport": "^0.3.2",
     "passport-intuit": "^0.2.0",
+    "passport-intuit-oauth": "^1.0.0",
     "request": "^2.79.0",
     "serve-favicon": "~2.3.2"
   }

@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var passport = require('passport');
 var util = require('util')
-var IntuitStrategy = require('passport-intuit').Strategy;
+var IntuitStrategy = require('passport-intuit-oauth').Strategy;
 var exphbs = require('express-handlebars');
 var favicon = require('serve-favicon');
 var session = require('express-session')
@@ -19,7 +19,7 @@ var docsRoute = require('./routes/docs.js');
 var connect = require('./routes/oauth/connect');
 var callback = require('./routes/oauth/callback');
 
-
+var token = require('./conf/token.js');
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -34,7 +34,7 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (obj, done) {
-  console.log('deserialize: ' + JSON.stringify(user, null, 4))
+  console.log('deserialize: ' + JSON.stringify(obj, null, 4))
   done(null, obj);
 });
 
@@ -44,20 +44,23 @@ passport.deserializeUser(function (obj, done) {
 //   callback with a user object.
 var hostName = 'localhost'
 passport.use(new IntuitStrategy({
-    returnURL: 'http://' + hostName + ':' + '3000' + '/auth/intuit/return',
-    realm: 'http://' + hostName + ':' + '3000' + '/'
+    consumerKey: token.consumer.key,
+    consumerSecret: token.consumer.secret,
+    callbackURL: "http://localhost:3000/auth/intuit/callback",
+    returnURL: "http://localhost:3000/auth/intuit/callback"
   },
-  function (identifier, profile, done) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-
-      // To keep the example simple, the user's Intuit profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Intuit account with a user record in your database,
-      // and return that user instead.
-      profile.identifier = identifier;
-      return done(null, profile);
-    });
+  function (oAuthToken, oAuthSecret, profile, done) {
+    console.log("consumerKey: " + token.consumer.key)
+    console.log("consumerSecret: " + token.consumer.secret)
+    console.log("token: " + oAuthToken)
+    console.log("tokenSecret: " + oAuthSecret)
+    console.log('***' + JSON.stringify(profile, null, 3));
+    return done(null, profile);
+    // User.findOrCreate({
+    //   intuitId: profile.id
+    // }, function (err, user) {
+    //   return done(err, user);
+    // });
   }
 ));
 
@@ -70,7 +73,7 @@ process.chdir(__dirname);
 var app = express();
 
 var logger = function (req, res, next) {
-  console.log("Request Received: " + req.path);
+  console.log("Request Received: " + req.method + ' ' + req.path);
   next(); // Passing the request to the next handler in the stack.
 }
 var addQboSettings = function (req, res, next) {
@@ -161,10 +164,12 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function (req, res) {
+  console.log('...')
   console.log('/')
-  console.log(JSON.stringify(req.user));
-  console.log('render')
-  res.render('index', {
+  // console.log(JSON.stringify(req.user));
+  // console.log('render')
+  return res.render('index', {
+    token: {},
     user: req.user
   });
 });
@@ -172,52 +177,17 @@ app.get('/', function (req, res) {
 // app.use('/connect', connect);
 // app.use('/callback', callback);
 // app.use('/display', routes);
-// app.use('/invoice', invoiceRoute);
+app.use('/invoice', invoiceRoute);
+app.get('/auth/intuit', passport.authenticate('intuit'));
 
-app.get('/account', ensureAuthenticated, function (req, res) {
-  res.render('account', {
-    user: req.user
-  });
-});
-
-app.get('/login', function (req, res) {
-  res.render('login', {
-    user: req.user
-  });
-});
-
-// GET /auth/intuit
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  The first step in Intuit authentication will involve redirecting
-//   the user to intuit.com.  After authenticating, Intuit will redirect the
-//   user back to this application at /auth/intuit/return
-app.get('/auth/intuit',
+app.get('/auth/intuit/callback',
   passport.authenticate('intuit', {
     failureRedirect: '/login'
   }),
   function (req, res) {
-    console.log('here we are...')
+    // Successful authentication, redirect home.
     res.redirect('/');
   });
-
-// GET /auth/intuit/return
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  If authentication fails, the user will be redirected back to the
-//   login page.  Otherwise, the primary route function function will be called,
-//   which, in this example, will redirect the user to the home page.
-app.get('/auth/intuit/return',
-  passport.authenticate('intuit', {
-    failureRedirect: '/login'
-  }),
-  function (req, res) {
-    res.redirect('/');
-  });
-
-app.get('/logout', function (req, res) {
-  req.logout();
-  res.redirect('/');
-});
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -240,11 +210,11 @@ app.use(function (err, req, res, next) {
 
 
 
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login')
-}
+// function ensureAuthenticated(req, res, next) {
+//   if (req.isAuthenticated()) {
+//     return next();
+//   }
+//   res.redirect('/login')
+// }
 
 module.exports = app;
